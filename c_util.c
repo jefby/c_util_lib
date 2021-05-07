@@ -1,5 +1,10 @@
+//
+// Created by dev on 2021/5/7.
+//
+#include "c_util.h"
+
 // caller must free returned ptr
-static char* getFormatTime() {
+char* getFormatTime() {
     time_t rawtime;
     struct tm * timeinfo;
     int def_buf_size = 128;
@@ -12,9 +17,8 @@ static char* getFormatTime() {
     return buffer;
 }
 
-
 //String split_string
-static char** split(char *source, const char* delimiter, int *array_len) {
+char** split(char *source, const char* delimiter, int *array_len) {
     char **outStr = NULL, *token = NULL;
     int arrayLen = 0;
     source = strdup(source);
@@ -35,7 +39,7 @@ static char** split(char *source, const char* delimiter, int *array_len) {
 }
 
 //Starts With
-static bool startswith(char *source, char* find) {
+bool startswith(char *source, char* find) {
     if(source == NULL || find == NULL)
         return false;
     if((strstr(source, find) - source) == 0) {
@@ -43,3 +47,23 @@ static bool startswith(char *source, char* find) {
     }
     return false;
 }
+
+void mysystem(const char *cmd)
+{
+    char result[10240] = {0};
+    char buf[1024] = {0};
+    FILE *fp = NULL;
+
+    if( (fp = popen(cmd, "r")) == NULL ) {
+        printf("popen error!\n");
+        return;
+    }
+
+    while (fgets(buf, sizeof(buf), fp)) {
+        strcat(result, buf);
+    }
+
+    pclose(fp);
+    printf("result: %s\n", result);
+}
+
