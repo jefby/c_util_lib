@@ -30,6 +30,8 @@ char* getFormatTime();
 // @param array_len splitted array length
 // return splitted array 
 char** split(char *source, const char* delimiter, int *array_len);
+// split thread_safe version
+char** split_r(char *source, const char* delimiter, int *array_len);
 
 
 bool startswith(char *source, char* find);

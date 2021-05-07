@@ -29,14 +29,40 @@ char** split(char *source, const char* delimiter, int *array_len) {
         outStr = realloc(outStr, (arrayLen + 1) * sizeof(char*));
         if(outStr == NULL)
             return NULL;
-        *(outStr + arrayLen) = malloc((strlen(token) + 1) * sizeof(char));
-        *(outStr + arrayLen) = strdup(token);
+        size_t token_length = strlen(token) + 1;
+        *(outStr + arrayLen) = malloc(token_length * sizeof(char));
+        strncpy(*(outStr+arrayLen), token, token_length);
         arrayLen++;
         token = strtok(NULL, delimiter);
     }
     *array_len = arrayLen;
     return outStr;
 }
+
+//String split_string thread-safe version
+char** split_r(char *source, const char* delimiter, int *array_len) {
+    char **outStr = NULL, *token = NULL;
+    int arrayLen = 0;
+    char* pSave = NULL;
+    source = strdup(source);
+    if(source == NULL || delimiter == NULL)
+        return NULL;
+    token = strtok_r(source, delimiter, &pSave);
+    while (token != NULL) {
+        outStr = realloc(outStr, (arrayLen + 1) * sizeof(char*));
+        if(outStr == NULL)
+            return NULL;
+        size_t token_length = strlen(token) + 1;
+        *(outStr + arrayLen) = malloc(token_length * sizeof(char));
+        strncpy(*(outStr+arrayLen), token, token_length);
+        arrayLen++;
+        token = strtok_r(NULL, delimiter, &pSave);
+    }
+    *array_len = arrayLen;
+    free(source);
+    return outStr;
+}
+
 
 //Starts With
 bool startswith(char *source, char* find) {

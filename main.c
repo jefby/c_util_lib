@@ -3,13 +3,14 @@
 int main()
 {
 	int array_len = 0;
-	char buf[]="round-trip min/avg/max = 50.294/56.765/65.589 ms\nround-trip min/avg/max = 50.294/56.765/65.589 ms\nround-trip min/avg/max = 50.294/56.765/65.589 ms";
+	//char buf[]="round-trip min/avg/max = 50.294/56.765/65.589 ms\nround-trip min/avg/max = 50.294/56.765/65.589 ms\nround-trip min/avg/max = 50.294/56.765/65.589 ms";
+	char buf[] = "round-trip min/avg/max = 61.542/68.705/75.211 ms";
 
 	if (startswith(buf, "round-trip")) {
 		char* cur_date = getFormatTime();
 		printf("cur_date %s \n", cur_date);
 		free(cur_date);
-		char **split_arr = split(buf,"/", &array_len);
+		char **split_arr = split_r(buf,"/", &array_len);
 
 		for (int i = 0; i < array_len; i++) {
             		printf("== split %d : value %s\n", i, split_arr[i]);
