@@ -10,11 +10,16 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
+#include <errno.h>
 #include <time.h>
+#include <sys/time.h>
+#include <pthread.h>
 
-#define INPUT 
-#define OUTPUT 
-#define INOUT
+extern pthread_mutex_t g_lock_print;
+
+//#define PRINT_INFO(fmt, arg ...) do { pthread_mutex_lock(&g_lock_print); printf("[%s:%d] : " fmt, __FILE__, __LINE__, ## arg); fflush(stdout); pthread_mutex_unlock(&g_lock_print); } while(0)
+#define PRINT_INFO(fmt, arg ...) do { printf("[%s:%d] : " fmt, __FILE__, __LINE__, ## arg);} while(0)
 
 // Get current date time
 // return current format time, such as 
@@ -29,10 +34,13 @@ char* getFormatTime();
 // @param delimiter, split delimiter
 // @param array_len splitted array length
 // return splitted array 
-char** split(char *source, const char* delimiter, int *array_len);
 // split thread_safe version
-char** split_r(char *source, const char* delimiter, int *array_len);
+char** split(char *source, const char* delimiter, int *array_len);
 
+
+bool contains(const char *source, char *find);
+
+int myusleep(useconds_t us);
 
 bool startswith(char *source, char* find);
 #endif//UNTITLED_C_UTIL_H
